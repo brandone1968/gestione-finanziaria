@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <link href="gestfin.css" rel="stylesheet" />
-    <title>MicroCMS - Home</title>
+    <title>Gestione Finanziaria - Home</title>
 </head>
 <body>
     <header>
