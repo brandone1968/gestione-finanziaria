@@ -1,7 +1,5 @@
 <?php
 
-/* 
- * Prova.
- */
-
-echo 'prova1';
+require 'model.php';
+$articles = getArticles();
+require 'view.php';
