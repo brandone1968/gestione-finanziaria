@@ -1,44 +1,16 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="{{ asset('/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/gestfin.css') }}" rel="stylesheet"> 
-        <link href="{{ asset('/css/latoja.datepicker.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/lavish-bootstrap.css') }}" rel="stylesheet">
-        <link href="{{ asset('/font-awesome-4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/mio-mbsoft.css') }}" rel="stylesheet">
-        <title>Gestione Finanziaria - Home</title>
-    </head>    
-    <body>
-        <div class="container">
-            <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-target">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="">Gestione Finanziaria</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="navbar-collapse-target">
-                    </div>
-                </div><!-- /.container -->
-            </nav>
-            {% for fattura in fatture %}
-                <fattura>
-                    <h2>{{ fattura.numFattura }}</h2>
-                    <p>{{ fattura.dataFattura }}</p>
-                    <p>{{ fattura.dataPagamento }}</p>
-                    <p>{{ fattura.imponibile }}</p>
-                </fattura>
-            {% endfor %}
-            <footer class="footer">
-                <a href="https://github.com/brandone1968/gestione-finanziaria">Gestione Finanziaria</a> sviluppato in PHP con Silex.
-            </footer>
-        </div>
-    </body>
-</html>
+{% extends "layout.html.twig" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    {% for fattura in fatture %}
+        <fattura>
+            <h2><a href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.noteFattura }}</a></h2>
+            <h2>{{ fattura.numFattura }}</h2>
+            <p>{{ fattura.dataFattura }}</p>
+            <p>{{ fattura.dataPagamento }}</p>
+            <p>{{ fattura.imponibile }}</p>
+        </fattura>
+    {% endfor %}
+{% endblock %}

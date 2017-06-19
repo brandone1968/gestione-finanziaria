@@ -20,3 +20,8 @@ $app->register(new Silex\Provider\AssetServiceProvider(), array(
 $app['dao.fattura'] = function ($app) {
     return new gestionefinanziaria\DAO\FatturaDAO($app['db']);
 };
+$app['dao.dettaglioFattura'] = function ($app) {
+    $dettaglioFatturaDAO = new gestionefinanziaria\DAO\DettaglioFatturaDAO($app['db']);
+    $dettaglioFatturaDAO->setFatturaDAO($app['dao.fattura']);
+    return $dettaglioFatturaDAO;
+};

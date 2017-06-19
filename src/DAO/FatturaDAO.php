@@ -2,26 +2,9 @@
 
 namespace gestionefinanziaria\DAO;
 
-use Doctrine\DBAL\Connection;
 use gestionefinanziaria\Domain\Fattura;
 
-class FatturaDAO
-{
-    /**
-     * Database connection
-     *
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $db;
-
-    /**
-     * Constructor
-     *
-     * @param \Doctrine\DBAL\Connection The database connection object
-     */
-    public function __construct(Connection $db) {
-        $this->db = $db;
-    }
+class FatturaDAO extends DAO {
 
     /**
      * Return a list of all Fatture, sorted by date (most recent first).
@@ -29,16 +12,37 @@ class FatturaDAO
      * @return array A list of all fatture.
      */
     public function findAll() {
-        $sql = "select * from fattura order by fattura_id desc";
-        $result = $this->db->fetchAll($sql);
-        
+        $sql = "select * from fattura order by fattura_id asc";
+        $result = $this->getDb()->fetchAll($sql);
+
         // Convert query result to an array of domain objects
         $fatture = array();
         foreach ($result as $row) {
             $fatturaId = $row['fattura_id'];
-            $fatture[$fatturaId] = $this->buildFattura($row);
+            $fatture[$fatturaId] = $this->buildDomainObject($row);
         }
         return $fatture;
+    }
+
+    /**
+     * Returns an fattura matching the supplied id.
+     *
+     * @param integer $id
+     *
+     * @return \gestionefinanziaria\Domain\Fattura|throws an exception if no matching fattura is found
+     */
+    public function find($id) {
+
+        $sql = "select * from fattura where fattura_id=?";
+
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+
+
+        if ($row)
+            return $this->buildDomainObject($row);
+        else
+            throw new \Exception("No fattura matching id " . $id);
     }
 
     /**
@@ -47,7 +51,7 @@ class FatturaDAO
      * @param array $row The DB row containing Fattura data.
      * @return \gestionefinanziaria\Domain\Fattura
      */
-    private function buildFattura(array $row) {
+    protected function buildDomainObject(array $row) {
         $fattura = new Fattura();
         $fattura->setId($row['fattura_id']);
         $fattura->setNumFattura($row['fattura_num_fattura']);
@@ -59,4 +63,5 @@ class FatturaDAO
         $fattura->setNoteFattura($row['fattura_note_fattura']);
         return $fattura;
     }
+
 }

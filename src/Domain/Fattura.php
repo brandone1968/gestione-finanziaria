@@ -70,65 +70,65 @@ class Fattura {
     }
 
     public function getNumFattura() {
-        return $this->title;
+        return $this->numFattura;
     }
 
     public function setNumFattura($numFattura) {
-        $this->title = $numFattura;
+        $this->numFattura = $numFattura;
         return $this;
     }
 
     public function getDataFattura() {
-        return $this->content;
+        return $this->dataFattura;
     }
 
     public function setDataFattura($dataFattura) {
-        $this->content = $dataFattura;
+        $this->dataFattura = $dataFattura;
         return $this;
     }
 
     public function getDataPagamento() {
-        return $this->content;
+        return $this->dataPagamento;
     }
 
     public function setDataPagamento($dataPagamento) {
-        $this->content = $dataPagamento;
+        $this->dataPagamento = $dataPagamento;
         return $this;
     }
 
     public function getImponibile() {
-        return $this->content;
+        return $this->imponibile;
     }
 
     public function setImponibile($imponibile) {
-        $this->content = $imponibile;
+        $this->imponibile = $imponibile;
         return $this;
     }
 
     public function getIva() {
-        return $this->content;
+        return $this->iva;
     }
 
     public function setIva($iva) {
-        $this->content = $iva;
+        $this->iva = $iva;
         return $this;
     }
 
     public function getTotFattura() {
-        return $this->content;
+        return $this->totFattura;
     }
 
     public function setTotFattura($totFattura) {
-        $this->content = $totFattura;
+        $this->totFattura = $totFattura;
         return $this;
     }
 
     public function getNoteFattura() {
-        return $this->content;
+        return $this->noteFattura;
     }
 
     public function setNoteFattura($noteFattura) {
-        $this->content = $noteFattura;
+        $this->noteFattura = $noteFattura;
         return $this;
     }
 

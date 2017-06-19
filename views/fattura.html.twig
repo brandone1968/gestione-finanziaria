@@ -1,0 +1,17 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ fattura.NumFattura }}{% endblock %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<p>
+    <h2>{{ fattura.NumFattura }}</h2>
+    <p>{{ fattura.NoteFattura }}</p>
+    <h3>Dettagli fattura</h3>
+    {% for dettaglioFattura in dettagliFattura %}
+        <strong>{{ dettaglioFattura.descrizione }}</strong> quantità : {{ dettaglioFattura.qta }}<br>
+    {% else %}
+        No comments yet.
+    {% endfor %}
+</p>
+{% endblock %}
