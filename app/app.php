@@ -25,3 +25,4 @@ $app['dao.dettaglioFattura'] = function ($app) {
     $dettaglioFatturaDAO->setFatturaDAO($app['dao.fattura']);
     return $dettaglioFatturaDAO;
 };
+

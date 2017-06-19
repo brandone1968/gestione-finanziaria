@@ -4,13 +4,90 @@
 
 {% block content %}
 
-    {% for fattura in fatture %}
-        <fattura>
-            <h2><a href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.noteFattura }}</a></h2>
-            <h2>{{ fattura.numFattura }}</h2>
-            <p>{{ fattura.dataFattura }}</p>
-            <p>{{ fattura.dataPagamento }}</p>
-            <p>{{ fattura.imponibile }}</p>
-        </fattura>
-    {% endfor %}
+    <p class="spazio">Fatture trovate <span class="badge">{{ fatture|length }}</span></p> 
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">Num.</th>
+                <th class="text-center">Descrizione</th>
+                <th class="text-center">Emessa da</th>
+                <th class="text-center">A favore di</th>
+                <th class="text-center">Importo <i class="fa fa-eur" aria-hidden="true"></i></th>
+                <th class="text-center">Data emissione</th>
+                <th class="text-center">Data pagamento</th>
+                <th id="nuovaFattura" colspan="3" class="text-center"><a href="nuovaFattura.html"><i class="fa fa-plus-circle fa-lg" data-toggle="tooltip" title="Nuova fattura" aria-hidden="true"></i></a></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for fattura in fatture %}
+            <fattura>
+                <tr>
+                    <td class="text-center"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.numFattura }}</a></td>
+                    <td>{{ fattura.noteFattura }}</td>
+                    <td class="text-center" > da fare</td>
+                    <td class="text-center">  da fare</td>
+                    <td class="text-center">{{ fattura.totFattura }}</td>
+                    <td class="text-center">{{ fattura.dataFattura|date('d/m/Y') }}</td>
+                    <td class="text-center">{{ fattura.dataPagamento|date('d/m/Y') }}</td>
+                    <td colspan="3" class="text-center"> da fare</td>
+                </tr>
+            </fattura>
+        {% endfor %}
+
+        <tr>
+            <td class="text-center">1</td>
+            <td>BLUE0001 1290</td>
+            <td>MBSoft s.a.s. di Massimo Brandone & C.</td>
+            <td>BLUE Reply S.r.l.</td>
+            <td class="text-right">6500,00</td>
+            <td class="text-center">30/01/2016</td>
+            <td class="text-center">03/04/2016</td>
+            <td colspan="3" class="text-center"><a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true" data-toggle="tooltip" title="Visualizza"></i></a></td>
+        </tr>
+        <tr>
+            <td class="text-center">12</td>
+            <td>BLUE0001 1292</td>
+            <td>MBSoft s.a.s. di Massimo Brandone & C.</td>
+            <td>BLUE Reply S.r.l.</td>
+            <td class="text-right">4500,10</td>
+            <td class="text-center">30/03/2016</td>
+            <td class="text-center"><a href="#"><i class="fa fa-exclamation-triangle fa-lg" data-toggle="tooltip" title="Inserire data incasso" aria-hidden="true"></i></a></td>
+            <td class="text-center"><a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="tooltip" title="Modifica"></i></a></td>
+            <td class="text-center"><a href="#"><i class="fa fa-trash-o" aria-hidden="true" data-toggle="tooltip" title="Cancella"></i></a></td>
+            <td class="text-center"><a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true" data-toggle="tooltip" title="Visualizza"></i></a></td>
+        </tr>
+    </tbody>
+</table>
+        
+<!-- paginazione -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+
+        <li class="disabled">
+            <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+
+        <li class="active">
+            <a href="#">1 <span class="sr-only">(current)</span></a>
+        </li>
+        <li>
+            <a href="#">2</a>
+        </li>
+        <li>
+            <a href="#">3</a>
+        </li>	
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+
+
+
 {% endblock %}
