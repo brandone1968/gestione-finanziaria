@@ -4,7 +4,26 @@
 
 {% block content %}
 
-    <p class="spazio">Scadenze</p> 
+    <p class="spazio">Scadenze del mese</p> 
 
-    
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">Descrizione scadenza</th>
+                <th class="text-center">Data scadenza</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for scadenza in scadenze %}
+            <fattura>
+                <tr>
+                    <td>{{ scadenza.descrizione }}</td>
+                    <td class="text-center">{{ scadenza.dataScadenza|date('d/m/Y') }}</td>
+                </tr>
+            </fattura>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

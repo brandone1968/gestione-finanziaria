@@ -1,13 +1,14 @@
 <?php
 
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('scadenze.html.twig', array("active_page" => "scadenze"));
+    $scadenze = $app['dao.scadenza']->findAll();
+    return $app['twig']->render('scadenze.html.twig', array('scadenze' => $scadenze, "active_page" => "scadenze"));
 })->bind('scadenze');
 
 // Home page
 $app->get('/fatture', function () use ($app) {
     $fatture = $app['dao.fattura']->findAll();
-    return $app['twig']->render('index.html.twig', array('fatture' => $fatture, 'active_page' => "fatture"));
+    return $app['twig']->render('fatture.html.twig', array('fatture' => $fatture, 'active_page' => "fatture"));
 })->bind('fatture');
 
 // Fattura  with dettagli
@@ -28,3 +29,5 @@ $app->get('imposte', function () use ($app) {
 $app->get('statistiche', function () use ($app) {
     return $app['twig']->render('statistiche.html.twig', array("active_page" => "statistiche"));
 })->bind('statistiche');
+
+

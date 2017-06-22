@@ -25,4 +25,7 @@ $app['dao.dettaglioFattura'] = function ($app) {
     $dettaglioFatturaDAO->setFatturaDAO($app['dao.fattura']);
     return $dettaglioFatturaDAO;
 };
+$app['dao.scadenza'] = function ($app) {
+    return new gestionefinanziaria\DAO\ScadenzaDAO($app['db']);
+};
 

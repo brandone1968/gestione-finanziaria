@@ -6,56 +6,48 @@ class Fattura {
 
     /**
      * Fattura id.
-     *
      * @var integer
      */
     private $id;
 
     /**
      * Numero Fattura.
-     *
      * @var integer
      */
     private $numFattura;
 
     /**
      * Data emissione Fattura.
-     *
      * @var date
      */
     private $dataFattura;
 
     /**
      * Data pagamento Fattura.
-     *
      * @var date
      */
     private $dataPagamento;
 
     /**
      * Imponibile Fattura.
-     *
      * @var float(10.2)
      */
     private $imponibile;
 
     /**
      * IVA Fattura.
-     *
      * @var float(10.2)
      */
     private $iva;
 
     /**
      * Totale Fattura.
-     *
      * @var float(10.2)
      */
     private $totFattura;
 
     /**
      * Note Fattura.
-     *
      * @var string
      */
     private $noteFattura;
@@ -66,7 +58,6 @@ class Fattura {
 
     public function setId($id) {
         $this->id = $id;
-        return $this;
     }
 
     public function getNumFattura() {
@@ -75,7 +66,6 @@ class Fattura {
 
     public function setNumFattura($numFattura) {
         $this->numFattura = $numFattura;
-        return $this;
     }
 
     public function getDataFattura() {
@@ -84,7 +74,6 @@ class Fattura {
 
     public function setDataFattura($dataFattura) {
         $this->dataFattura = $dataFattura;
-        return $this;
     }
 
     public function getDataPagamento() {
@@ -93,7 +82,6 @@ class Fattura {
 
     public function setDataPagamento($dataPagamento) {
         $this->dataPagamento = $dataPagamento;
-        return $this;
     }
 
     public function getImponibile() {
@@ -102,7 +90,6 @@ class Fattura {
 
     public function setImponibile($imponibile) {
         $this->imponibile = $imponibile;
-        return $this;
     }
 
     public function getIva() {
@@ -111,7 +98,6 @@ class Fattura {
 
     public function setIva($iva) {
         $this->iva = $iva;
-        return $this;
     }
 
     public function getTotFattura() {
@@ -120,7 +106,6 @@ class Fattura {
 
     public function setTotFattura($totFattura) {
         $this->totFattura = $totFattura;
-        return $this;
     }
 
     public function getNoteFattura() {
@@ -129,7 +114,6 @@ class Fattura {
 
     public function setNoteFattura($noteFattura) {
         $this->noteFattura = $noteFattura;
-        return $this;
     }
 
 }

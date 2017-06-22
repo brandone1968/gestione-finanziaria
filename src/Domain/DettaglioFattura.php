@@ -5,43 +5,37 @@ namespace gestionefinanziaria\Domain;
 class DettaglioFattura {
 
     /**
-     * Dettaglio id.
-     *
+     * Dettaglio id. 
      * @var integer
      */
     private $id;
 
     /**
      * Descrizione dettaglio fattura.
-     *
      * @var string
      */
     private $descrizione;
 
     /**
      * Quantità.
-     *
      * @var integer
      */
     private $qta;
 
     /**
      * Unità misura della quantità.
-     *
      * @var integer
      */
     private $unitaMisuraQta;
 
     /**
      * Tariffa.
-     *
      * @var float
      */
     private $tariffa;
 
     /**
      * Dettaglio fattura timestamp.
-     *
      * @var timestamp
      */
     private $dettaglioFatturaTimeStamp;
@@ -52,7 +46,6 @@ class DettaglioFattura {
 
     public function setId($id) {
         $this->id = $id;
-        return $this;
     }
 
     public function getDescrizione() {
@@ -61,7 +54,6 @@ class DettaglioFattura {
 
     public function setDescrizione($descrizione) {
         $this->descrizione = $descrizione;
-        return $this;
     }
 
     public function getQta() {
@@ -70,7 +62,6 @@ class DettaglioFattura {
 
     public function setQta($qta) {
         $this->qta = $qta;
-        return $this;
     }
     
     
@@ -80,7 +71,6 @@ class DettaglioFattura {
 
     public function setUnitaMisuraQta($unitaMisuraQta) {
         $this->unitaMisuraQta = $unitaMisuraQta;
-        return $this;
     }
     
     public function getTariffa() {
@@ -89,7 +79,6 @@ class DettaglioFattura {
 
     public function setTariffa($tariffa) {
         $this->tariffa = $tariffa;
-        return $this;
     }    
         
     public function getDettaglioFatturaTimeStamp() {
@@ -98,7 +87,6 @@ class DettaglioFattura {
 
     public function setDettaglioFatturaTimeStamp($dettaglioFatturaTimeStamp) {
         $this->dettaglioFatturaTimeStamp = $dettaglioFatturaTimeStamp;
-        return $this;
     }    
     
     public function getFattura() {
@@ -107,6 +95,5 @@ class DettaglioFattura {
 
     public function setFattura(Fattura $fattura) {
         $this->fattura = $fattura;
-        return $this;
     }
 }
