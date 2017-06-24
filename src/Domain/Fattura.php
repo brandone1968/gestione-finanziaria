@@ -1,6 +1,7 @@
 <?php
 
 namespace gestionefinanziaria\Domain;
+use gestionefinanziaria\Domain\Ditta;
 
 class Fattura {
 
@@ -16,6 +17,12 @@ class Fattura {
      */
     private $numFattura;
 
+    /**
+     * Descrizione Fattura.
+     * @var string
+     */
+    private $descrizione;
+    
     /**
      * Data emissione Fattura.
      * @var date
@@ -46,6 +53,9 @@ class Fattura {
      */
     private $totFattura;
 
+    private $ditta1;
+    
+    private $ditta2;
     /**
      * Note Fattura.
      * @var string
@@ -68,6 +78,14 @@ class Fattura {
         $this->numFattura = $numFattura;
     }
 
+        public function getDescrizione() {
+        return $this->descrizione;
+    }
+
+    public function setDescrizione($descrizione) {
+        $this->descrizione = $descrizione;
+    }
+    
     public function getDataFattura() {
         return $this->dataFattura;
     }
@@ -116,4 +134,19 @@ class Fattura {
         $this->noteFattura = $noteFattura;
     }
 
+    public function getDitta1() {
+        return $this->ditta1;
+    }
+
+    public function setDitta1(Ditta $ditta1) {
+        $this->ditta1 = $ditta1;
+    }
+    
+        public function getDitta2() {
+        return $this->ditta2;
+    }
+
+    public function setDitta2(Ditta $ditta2) {
+        $this->ditta2 = $ditta2;
+    }
 }

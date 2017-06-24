@@ -25,9 +25,9 @@
             <fattura>
                 <tr>
                     <td class="text-center"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.numFattura }}</a></td>
-                    <td>{{ fattura.noteFattura }}</td>
-                    <td class="text-center" > da fare</td>
-                    <td class="text-center">  da fare</td>
+                    <td>{{ fattura.descrizione }}</td>
+                    <td class="text-center" >{{ fattura.ditta1.denominazione }}</td>
+                    <td class="text-center">{{ fattura.ditta2.denominazione }}</td>
                     <td class="text-center">{{ fattura.totFattura }}</td>
                     <td class="text-center">{{ fattura.dataFattura|date('d/m/Y') }}</td>
                     <td class="text-center">{{ fattura.dataPagamento|date('d/m/Y') }}</td>
