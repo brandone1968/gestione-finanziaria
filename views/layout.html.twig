@@ -10,6 +10,7 @@
         <link href="{{ asset('/css/lavish-bootstrap.css') }}" rel="stylesheet">
         <link href="{{ asset('/font-awesome-4.6.3/css/font-awesome.min.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/mio-mbsoft.css') }}" rel="stylesheet">
+
         <title>Gestione Finanziaria - {% block title %}{% endblock %}</title>
     </head>    
     <body>
@@ -29,9 +30,9 @@
 
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li {% if active_page=='mbsoft' %} class="active"{% endif%} class="altezza18"><a href="{{ path('mbsoft') }}">MBSoft</a></li>
+                            <li {% if active_page=='mbsoft' %} class="active altezza18"{% endif%} class="altezza18"><a href="{{ path('mbsoft') }}">MBSoft</a></li>
                             <li {% if active_page=='scadenze' %} class="active"{% endif%}><a href="{{ path('scadenze') }}"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a></li>
-                            <li {% if active_page=='fatture' %} class="active"{% endif%}><a href="{{ path('fatture') }}">Fatture</a></li>
+                            <li {% if active_page=='fatture' %} class="active"{% endif%}><a href="{{ path('fatture', {'tipoPagamento': tipoPagamento , 'anno': anno}) }}">Fatture</a></li>
                             <li {% if active_page=='imposte' %} class="active"{% endif%}><a href="{{ path('imposte') }}">Imposte</a></li>
                             <li {% if active_page=='statistiche' %} class="active"{% endif%}><a href="{{ path('statistiche') }}">Statistiche</a></li>
                             <li class="dropdown">
@@ -57,5 +58,17 @@
             Copyright © 2016 - MBSoft Sas. Tutti i diritti riservati. P.IVA 11054670010
             <a href="https://github.com/brandone1968/gestione-finanziaria"> - Gestione Finanziaria</a> è sviluppato in PHP con Silex.
         </div>
+        <!-- jQuery -->
+        <script src="{{ asset('/lib/jquery/jquery-3.2.1.min.js') }}"></script>
+        <script src="{{ asset('/lib/jquery/jquery-ui.min.js') }}"></script>
+        <!-- JavaScript Boostrap plugin -->
+        <script src="{{ asset('/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <!-- JavaScript Mio plugin -->
+        <script src="{{ asset('/lib/jquery/paging.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#tableData').paging({limit: 12});
+            });
+        </script>
     </body>
 </html>

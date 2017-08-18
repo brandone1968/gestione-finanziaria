@@ -12,19 +12,25 @@ class FatturaDAO extends DAO {
      *
      * @return array A list of all fatture.
      */
-    public function findAll() {
+    public function findAll($tipoPagamento, $anno) {
         //$sql = "select * from fattura order by fattura_id asc";
         //$sql = "select * from fattura Join ditta as ditta1 on id_ditta1 = ditta1.id_ditta Join ditta as ditta2 on id_ditta2 = ditta2.id_ditta order by fattura_id asc";
         $sql = "select 
-                fattura_id, fattura_num_fattura, descrizione, fattura_data_fattura, fattura_data_pagamento, fattura_imponibile, fattura_iva,
+                fattura_id, fattura_num_fattura, descrizione, fattura_data_fattura, fattura_data_pagamento, fattura_imponibile, percentuale_IVA, fattura_iva,
                 fattura_tot_fattura, fattura_note_fattura, id_ditta1, id_ditta2,
                 ditta1.id_ditta as id_ditta1, ditta1.denominazione as denominazione1, ditta1.indirizzo as indirizzo1, ditta1.cap as cap1, ditta1.citta as citta1, ditta1.cf as cf1, ditta1.piva as piva1, ditta1.default_immissione as default_immissione1, ditta1.ditta_time_stamp as ditta_time_stamp1,
                 ditta2.id_ditta as id_ditta2, ditta2.denominazione as denominazione2, ditta2.indirizzo as indirizzo2, ditta2.cap as cap2, ditta2.citta as citta2, ditta2.cf as cf2, ditta2.piva as piva2, ditta2.default_immissione as default_immissione2, ditta2.ditta_time_stamp as ditta_time_stamp2
                 from fattura 
                 Join ditta as ditta1 on id_ditta1 = ditta1.id_ditta
-                Join ditta as ditta2 on id_ditta2 = ditta2.id_ditta
-                order by fattura_id asc";
-        $result = $this->getDb()->fetchAll($sql);
+                Join ditta as ditta2 on id_ditta2 = ditta2.id_ditta";
+        if ($tipoPagamento == 0) {
+            $sql .= " where YEAR(fattura_data_fattura)=?";
+        } else {
+            $sql .= " where YEAR(fattura_data_pagamento)=?";
+        }                
+        $sql .= " order by fattura_id asc";
+        
+        $result = $this->getDb()->fetchAll($sql, array($anno));
 
         // Convert query result to an array of domain objects
         $fatture = array();
@@ -44,7 +50,14 @@ class FatturaDAO extends DAO {
      */
     public function find($id) {
 
-        $sql = "select * from fattura where fattura_id=?";
+        $sql = "select fattura_id, fattura_num_fattura, descrizione, fattura_data_fattura, fattura_data_pagamento, fattura_imponibile, percentuale_IVA, fattura_iva,
+                fattura_tot_fattura, fattura_note_fattura, id_ditta1, id_ditta2,
+                ditta1.id_ditta as id_ditta1, ditta1.denominazione as denominazione1, ditta1.indirizzo as indirizzo1, ditta1.cap as cap1, ditta1.citta as citta1, ditta1.cf as cf1, ditta1.piva as piva1, ditta1.default_immissione as default_immissione1, ditta1.ditta_time_stamp as ditta_time_stamp1,
+                ditta2.id_ditta as id_ditta2, ditta2.denominazione as denominazione2, ditta2.indirizzo as indirizzo2, ditta2.cap as cap2, ditta2.citta as citta2, ditta2.cf as cf2, ditta2.piva as piva2, ditta2.default_immissione as default_immissione2, ditta2.ditta_time_stamp as ditta_time_stamp2
+                from fattura
+                Join ditta as ditta1 on id_ditta1 = ditta1.id_ditta
+                Join ditta as ditta2 on id_ditta2 = ditta2.id_ditta
+                where fattura_id=?";
 
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
@@ -54,6 +67,50 @@ class FatturaDAO extends DAO {
             return $this->buildDomainObject($row);
         else
             throw new \Exception("No fattura matching id " . $id);
+    }
+
+    /**
+     * Ritorna elenco degli anni di emissione delle fatture.
+     *
+     * @return \gestionefinanziaria\Domain\Fattura|throws an exception if no matching fattura is found
+     */
+    public function findAllYearIssue() {
+        $sql = "select 
+                distinct YEAR(fattura_data_fattura) as annoSelezionabile
+                from fattura
+                order by fattura_data_fattura desc";
+        $anniSelezionabili = array();
+        $i = 0;
+        $result = $this->getDb()->fetchAll($sql);
+        foreach ($result as $row) {
+            $anniSelezionabili[$i] = $row['annoSelezionabile'];
+            $i++;
+        }        
+       
+        return $anniSelezionabili;
+    }
+    
+        /**
+     * Ritorna elenco degli anni di incasso delle fatture.
+     *
+     * @return \gestionefinanziaria\Domain\Fattura|throws an exception if no matching fattura is found
+     */
+    public function findAllYearBalance() {
+        $sql = "select 
+                distinct YEAR(fattura_data_pagamento) as annoSelezionabile
+                from fattura
+                where fattura_data_pagamento IS NOT NULL
+                order by fattura_data_pagamento desc";
+        
+        $anniSelezionabili = array();
+        $i = 0;
+        $result = $this->getDb()->fetchAll($sql);
+        foreach ($result as $row) {
+            $anniSelezionabili[$i] = $row['annoSelezionabile'];
+            $i++;
+        }        
+       
+        return $anniSelezionabili;
     }
 
     /**
@@ -70,6 +127,7 @@ class FatturaDAO extends DAO {
         $fattura->setDataFattura($row['fattura_data_fattura']);
         $fattura->setDataPagamento($row['fattura_data_pagamento']);
         $fattura->setImponibile($row['fattura_imponibile']);
+        $fattura->setPercentualeIva($row['percentuale_IVA']);
         $fattura->setIva($row['fattura_iva']);
         $fattura->setTotFattura($row['fattura_tot_fattura']);
         $fattura->setNoteFattura($row['fattura_note_fattura']);

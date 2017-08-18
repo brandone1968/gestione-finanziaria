@@ -3,14 +3,74 @@
 {% block title %}{{ fattura.NumFattura }}{% endblock %}
 
 {% block content %}
-<p>
-    <h2>{{ fattura.NumFattura }}</h2>
-    <p>{{ fattura.NoteFattura }}</p>
+    <p>
+    <br>
     <h3>Dettagli fattura</h3>
-    {% for dettaglioFattura in dettagliFattura %}
-        <strong>{{ dettaglioFattura.descrizione }}</strong> quantità : {{ dettaglioFattura.qta }}<br>
-    {% else %}
-        No comments yet.
-    {% endfor %}
+    <br>
+
+    <table id="tableDettaglioFattura" class="table table-bordered table-hover">
+        <tr>
+            <td><strong>{{ fattura.ditta1.denominazione }}</strong></td><td><strong>{{ fattura.ditta2.denominazione }}</strong></td>
+        </tr><tr>
+
+            <td>{{ fattura.ditta1.indirizzo }}</td><td>{{ fattura.ditta2.indirizzo }}</td>
+        </tr><tr>
+
+            <td>{{ fattura.ditta1.cap }} - {{ fattura.ditta1.citta }}</td><td>{{ fattura.ditta2.cap }} - {{ fattura.ditta2.citta }}</td>
+        </tr><tr>
+            <td>C.F. {{ fattura.ditta1.cf }}</td><td>C.F. {{ fattura.ditta2.cf }}</td>
+        </tr><tr>
+            <td>P.IVA {{ fattura.ditta1.piva }}</td><td>P.IVA {{ fattura.ditta2.piva }}</td>
+        </tr>
+    </table>
+    <br>
+    <table id="tableFattura" class="table table-bordered table-hover">
+        <tr>
+            <td colspan="2">Fattura N° <strong>{{ fattura.NumFattura }}</strong> del <strong>{{ fattura.dataFattura }}</strong></td>
+        </tr>
+    </table>
+    <br>
+    <table id="tableFattura" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">Descrizione</th>
+                <th class="text-center">Quantità</th>
+                <th class="text-center">Importo</th>
+                <th class="text-center">Totale</th>
+             </tr>
+        </thead>
+        {% for dettaglioFattura in dettagliFattura %}
+            <tr>
+                <td>{{ dettaglioFattura.descrizione }}</td>
+                {% if dettaglioFattura.unitaMisuraQta == 0 %}
+                    <td>{{ dettaglioFattura.qta }} gg</td>
+                    <td>{{ dettaglioFattura.tariffa }}</td>
+                    <td>{{ dettaglioFattura.tariffa * dettaglioFattura.qta | number_format(2, '.', ',') }}</td>
+                {% else %}
+                    <td>{{ dettaglioFattura.qta }} ore</td>
+                    <td>{{ dettaglioFattura.tariffa }}</td>
+                    <td>{{ dettaglioFattura.tariffa / 8 * dettaglioFattura.qta }}</td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <td>No comments yet.</td>
+        {% endfor %}
+        
+        <tr>
+            <td colspan="3" class="text-right">Imponibile</td><td>{{ fattura.imponibile | number_format(2, ',', '.') }}</td>
+            </tr><tr>
+            <td colspan="3" class="text-right">IVA {{ fattura.percentualeIVA }}%</td><td>{{ fattura.iva | number_format(2, ',', '.') }}</td>
+            </tr><tr>
+            <td colspan="3" class="text-right">Totale fattura</td><td>{{ fattura.totFattura | number_format(2, ',', '.') }}</td>
+        </tr>
+
+    </table>
+        
+    <br>
+    <table id="tableNoteFattura" class="table table-bordered">
+        <tr>
+            <td colspan="2"><strong>Note: </strong>{{ fattura.noteFattura }}</td>
+        </tr>
+    </table>
 </p>
 {% endblock %}

@@ -4,9 +4,50 @@
 
 {% block content %}
 
-    <p class="spazio">Fatture trovate <span class="badge">{{ fatture|length }}</span></p> 
 
-    <table class="table table-bordered table-hover">
+
+    <p class="spazio" ></p>
+
+
+    <form name="ricercaFattura" action="{{ path('fatture', { 'tipoPagamento': tipoPagamento , 'anno': anno }) }}" method="post"> 
+        <div class="row">
+            <div class="col-xs-2">
+                <label class="control-label" for="tipoPagamento">Fatture trovate <span class="badge">{{ fatture|length }}</span></label>
+            </div>
+            <div class="col-xs-2">
+                <select class="form-control" name = "tipoPagamento" id = "tipoPagamento" placeholder=".col-xs-2" onchange='document.ricercaFattura.submit()'>
+                    {% if (tipoPagamento == 0) %}
+                        <option value="0" selected>Emesse</option>
+                         <option value="1">Incassate</option>
+                    {% else %}
+                        <option value="0">Emesse</option>
+                         <option value="1" selected>Incassate</option>
+                    {% endif %}
+                </select>            
+            </div>
+            <div class="col-xs-1">
+                <label class="control-label" for="anno">Nel</label>
+            </div>
+            <div class="col-xs-2">
+                <select class="form-control" name = "anno" id = "anno" placeholder=".col-xs-2"  onchange='document.ricercaFattura.submit()'>
+                    {% for annoSelezionabile in anniSelezionabili %}
+
+                        {% if (annoSelezionabile == anno) %}
+                            <option value="{{annoSelezionabile}}"selected>{{annoSelezionabile}}</option>
+                        {% else %}
+                            <option value="{{annoSelezionabile}}">{{annoSelezionabile}}</option>
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+    <br>
+
+
+
+    <table id="tableData" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th class="text-center">Num.</th>
@@ -19,75 +60,34 @@
                 <th id="nuovaFattura" colspan="3" class="text-center"><a href="nuovaFattura.html"><i class="fa fa-plus-circle fa-lg" data-toggle="tooltip" title="Nuova fattura" aria-hidden="true"></i></a></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="myTable">
 
             {% for fattura in fatture %}
             <fattura>
                 <tr>
                     <td class="text-center"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.numFattura }}</a></td>
-                    <td>{{ fattura.descrizione }}</td>
-                    <td class="text-center" >{{ fattura.ditta1.denominazione }}</td>
-                    <td class="text-center">{{ fattura.ditta2.denominazione }}</td>
-                    <td class="text-center">{{ fattura.totFattura }}</td>
-                    <td class="text-center">{{ fattura.dataFattura|date('d/m/Y') }}</td>
-                    <td class="text-center">{{ fattura.dataPagamento|date('d/m/Y') }}</td>
-                    <td colspan="3" class="text-center"> da fare</td>
+                    <td><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.descrizione }}</a></td>
+                    <td class="text-left" ><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.ditta1.denominazione }}</a></td>
+                    <td class="text-left"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.ditta2.denominazione }}</a></td>
+                    <td class="text-left"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.totFattura }}</a></td>
+                    <td class="text-center"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.dataFattura|date('d/m/Y') }}</a></td>
+                        {% if fattura.dataPagamento == "" %}
+                        <td class="text-center"><a href="#"><i class="fa fa-exclamation-triangle fa-lg" data-toggle="tooltip" title="Inserire data incasso" aria-hidden="true"></i></a></td>
+                        <td class="text-center"><a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="tooltip" title="Modifica"></i></a></td>
+                        <td class="text-center"><a href="#"><i class="fa fa-trash-o" aria-hidden="true" data-toggle="tooltip" title="Cancella"></i></a></td>
+                        <td class="text-center"><a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true" data-toggle="tooltip" title="Visualizza"></i></a></td>
+                            {% else %}
+                        <td class="text-center"><a title="Dettagli fattura" href="{{ path('fattura', { 'id': fattura.id }) }}">{{ fattura.dataPagamento|date('d/m/Y') }}</a></td>
+                        <td colspan="3" class="text-center"><a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true" data-toggle="tooltip" title="Visualizza"></i></a></td>
+                            {% endif %}
+
+                    <!-- <td colspan="3" class="text-center"> da fare</td> -->
                 </tr>
             </fattura>
         {% endfor %}
 
-        <tr>
-            <td class="text-center">1</td>
-            <td>BLUE0001 1290</td>
-            <td>MBSoft s.a.s. di Massimo Brandone & C.</td>
-            <td>BLUE Reply S.r.l.</td>
-            <td class="text-right">6500,00</td>
-            <td class="text-center">30/01/2016</td>
-            <td class="text-center">03/04/2016</td>
-            <td colspan="3" class="text-center"><a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true" data-toggle="tooltip" title="Visualizza"></i></a></td>
-        </tr>
-        <tr>
-            <td class="text-center">12</td>
-            <td>BLUE0001 1292</td>
-            <td>MBSoft s.a.s. di Massimo Brandone & C.</td>
-            <td>BLUE Reply S.r.l.</td>
-            <td class="text-right">4500,10</td>
-            <td class="text-center">30/03/2016</td>
-            <td class="text-center"><a href="#"><i class="fa fa-exclamation-triangle fa-lg" data-toggle="tooltip" title="Inserire data incasso" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="tooltip" title="Modifica"></i></a></td>
-            <td class="text-center"><a href="#"><i class="fa fa-trash-o" aria-hidden="true" data-toggle="tooltip" title="Cancella"></i></a></td>
-            <td class="text-center"><a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true" data-toggle="tooltip" title="Visualizza"></i></a></td>
-        </tr>
+
     </tbody>
 </table>
-        
-<!-- paginazione -->
-<nav aria-label="Page navigation">
-    <ul class="pagination">
-
-        <li class="disabled">
-            <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-        </li>
-
-        <li class="active">
-            <a href="#">1 <span class="sr-only">(current)</span></a>
-        </li>
-        <li>
-            <a href="#">2</a>
-        </li>
-        <li>
-            <a href="#">3</a>
-        </li>	
-        <li>
-            <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-
-
-
-
 
 {% endblock %}

@@ -1,15 +1,38 @@
 <?php
 
+// Home page - prossime scadenze
 $app->get('/', function () use ($app) {
+    $tipoPagamento = 0;
+    $anno = date("Y");
     $scadenze = $app['dao.scadenza']->findAll();
-    return $app['twig']->render('scadenze.html.twig', array('scadenze' => $scadenze, "active_page" => "scadenze"));
+    return $app['twig']->render('scadenze.html.twig', array('scadenze' => $scadenze, 'tipoPagamento' => $tipoPagamento, 'anno' => $anno, "active_page" => "scadenze"));
 })->bind('scadenze');
 
-// Home page
-$app->get('/fatture', function () use ($app) {
-    $fatture = $app['dao.fattura']->findAll();
-    return $app['twig']->render('fatture.html.twig', array('fatture' => $fatture, 'active_page' => "fatture"));
+   
+// Elenco fatture
+$app->match('/fatture/{tipoPagamento}/{anno}', function ($tipoPagamento, $anno) use ($app) {
+    if (isset($_POST["anno"])) {
+        $anno = $_POST["anno"];
+    }
+    if (isset($_POST["tipoPagamento"])) {
+        $tipoPagamento = $_POST["tipoPagamento"];
+    }
+    if ($tipoPagamento == null) {
+        $tipoPagamento = 0;
+    }
+    if ($anno == null) {
+        $anno = date("Y");
+    }
+    if ($tipoPagamento == 0) {
+        $anniSelezionabili = $app['dao.fattura']->findAllYearIssue();
+    } else {
+        $anniSelezionabili = $app['dao.fattura']->findAllYearBalance();
+    }
+
+    $fatture = $app['dao.fattura']->findAll($tipoPagamento, $anno);
+    return $app['twig']->render('fatture.html.twig', array('fatture' => $fatture, 'tipoPagamento' => $tipoPagamento, 'anno' => $anno, 'anniSelezionabili' => $anniSelezionabili, 'active_page' => "fatture"));
 })->bind('fatture');
+
 
 // Fattura  with dettagli
 $app->get('/fattura/{id}', function ($id) use ($app) {
@@ -19,15 +42,21 @@ $app->get('/fattura/{id}', function ($id) use ($app) {
 })->bind('fattura');
 
 $app->get('mbsoft', function () use ($app) {
-    return $app['twig']->render('mbsoft.html.twig', array("active_page" => "mbsoft"));
+    $tipoPagamento = 0;
+    $anno = date("Y");
+    return $app['twig']->render('mbsoft.html.twig', array('tipoPagamento' => $tipoPagamento, 'anno' => $anno, "active_page" => "mbsoft"));
 })->bind('mbsoft');
 
 $app->get('imposte', function () use ($app) {
-    return $app['twig']->render('imposte.html.twig', array("active_page" => "imposte"));
+    $tipoPagamento = 0;
+    $anno = date("Y");
+    return $app['twig']->render('imposte.html.twig', array('tipoPagamento' => $tipoPagamento, 'anno' => $anno, "active_page" => "imposte"));
 })->bind('imposte');
 
 $app->get('statistiche', function () use ($app) {
-    return $app['twig']->render('statistiche.html.twig', array("active_page" => "statistiche"));
+    $tipoPagamento = 0;
+    $anno = date("Y");
+    return $app['twig']->render('statistiche.html.twig', array('tipoPagamento' => $tipoPagamento, 'anno' => $anno, "active_page" => "statistiche"));
 })->bind('statistiche');
 
 

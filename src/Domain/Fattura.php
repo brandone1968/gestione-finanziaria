@@ -41,6 +41,11 @@ class Fattura {
      */
     private $imponibile;
 
+     /**
+     * percentuale IVA.
+     * @var float(10.2)
+     */
+    private $percentualeIVA;
     /**
      * IVA Fattura.
      * @var float(10.2)
@@ -110,6 +115,14 @@ class Fattura {
         $this->imponibile = $imponibile;
     }
 
+    public function getPercentualeIva() {
+        return $this->percentualeIVA;
+    }
+
+    public function setPercentualeIva($percentualeIVA) {
+        $this->percentualeIVA = $percentualeIVA;
+    }
+    
     public function getIva() {
         return $this->iva;
     }
