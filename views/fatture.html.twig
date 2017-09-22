@@ -9,7 +9,7 @@
     <p class="spazio" ></p>
 
 
-    <form name="ricercaFattura" action="{{ path('fatture', { 'tipoPagamento': tipoPagamento , 'anno': anno }) }}" method="post"> 
+    <form name="ricercaFattura" action="{{ path('fatture') }}" method="post"> 
         <div class="row">
             <div class="col-xs-2">
                 <label class="control-label" for="tipoPagamento">Fatture trovate <span class="badge">{{ fatture|length }}</span></label>
