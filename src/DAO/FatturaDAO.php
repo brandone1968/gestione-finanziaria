@@ -113,6 +113,27 @@ class FatturaDAO extends DAO {
         return $anniSelezionabili;
     }
 
+    
+        public function save(Fattura $fattura) {
+        $fatturaData = array(
+            'fattura_num_fattura' => $fattura->getNumFattura(),
+            'descrizione' => $fattura->getDescrizione(),
+            'id_ditta1' => 1,
+            'id_ditta2' => 2
+            );
+
+        if ($fattura->getId()) {
+            // La fattura è già presente, quindi è da aggiornare
+            $this->getDb()->update('fattura', $fatturaData, array('fattura_id' => $fattura->getId()));
+        } else {
+            // La fattura non è presente, è nuova, quindi è da inserire
+            $this->getDb()->insert('fattura', $fatturaData);
+            // Get the id of the newly created comment and set it on the entity.
+            //$id = $this->getDb()->lastInsertId();
+            //$comment->setId($id);
+        }
+    }
+    
     /**
      * Creates an Fattura object based on a DB row.
      *

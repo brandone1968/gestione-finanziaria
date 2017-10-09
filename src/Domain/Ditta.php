@@ -122,12 +122,12 @@ class Ditta {
         return $this->default_immissione;
     }
 
-    public function getDettaglioFatturaTimeStamp() {
+    public function getDittaTimeStamp() {
         return $this->dettaglioFatturaTimeStamp;
     }
 
-    public function setDettaglioFatturaTimeStamp($dettaglioFatturaTimeStamp) {
-        $this->dettaglioFatturaTimeStamp = $dettaglioFatturaTimeStamp;
+    public function setDittaTimeStamp($dittaTimeStamp) {
+        $this->dittaTimeStamp = $dittaTimeStamp;
     }
 
     public function getFattura() {

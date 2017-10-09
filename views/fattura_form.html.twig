@@ -1,0 +1,51 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}Nuova fattura{% endblock %}
+
+{% block content %}
+    <p>
+        <br>
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+    <h2 class="text-center">{{ block('title') }}</h2>
+
+
+    <div class="well">
+        {{ form_start(fatturaForm) }}
+
+        {{ form_row(fatturaForm.numFattura)}}                   
+        {{ form_widget(fatturaForm.numFattura)}}
+
+        {{ form_row(fatturaForm.descrizione) }}
+        {{ form_widget(fatturaForm.descrizione) }}
+
+        {# definisco etichetta della select delle ditte che emettono la fattura#}
+        
+        {{ form_label(fatturaForm.ditta1, 'Emessa da ', {
+            'label_attr': {'class': 'CUSTOM_LABEL_CLASS'}
+        }) }}
+        
+        {# definisco etichetta della select delle ditte che ricevono la fattura#}
+        
+        {{ form_label(fatturaForm.ditta2, 'Verso ', {
+            'label_attr': {'class': 'CUSTOM_LABEL_CLASS'}
+        }) }}
+        
+        {{ form_widget(fatturaForm.ditta1) }}
+        
+        {{ form_widget(fatturaForm.ditta2) }}
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-3">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </div>
+        </div>
+        {{ form_end(fatturaForm) }}
+
+    </div>
+
+{% endblock %}

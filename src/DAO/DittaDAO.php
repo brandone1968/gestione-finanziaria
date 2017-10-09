@@ -32,6 +32,50 @@ class DittaDAO extends DAO {
         return $ditte;
     }
 
+     /**
+     * Return a list of all ditta ordinato per ordine alfabetico della descrizione
+     * @param integer $fatturaId The fattura id.
+     * @return array A list of all dattagli for the fattura.
+     */
+    public function findAll() {
+        
+        $sql = "select id_ditta, denominazione, indirizzo, cap, citta, cf, piva, default_immissione, ditta_time_stamp";  
+        $sql .= " from ditta order by denominazione asc";
+        
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of domain objects
+        $ditte = array();
+        foreach ($result as $row) {
+            $dittaId = $row['id_ditta'];
+            $ditte[$dittaId] = $this->buildDomainObject($row);
+        }
+        return $ditte;
+    }
+ 
+         /**
+     * Return a list of all ditta ordinato per ordine alfabetico della descrizione
+     * @param integer $fatturaId The fattura id.
+     * @return array A list of all dattagli for the fattura.
+     */
+    public function findAllElencoSelect() {
+        
+        $sql = "select id_ditta, denominazione";  
+        $sql .= " from ditta order by denominazione asc";
+        
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of domain objects
+        $elencoDitteSelect = array();
+        foreach ($result as $row) {            
+            $id = $row['id_ditta'];
+            $descrizione = $row['denominazione'];
+            //$elencoDitteSelect[$id]=$descrizione;
+            $elencoDitteSelect[$descrizione]=$id;
+        }
+        return $elencoDitteSelect;
+    }
+    
     /**
      * Creates an Ditta object based on a DB row.
      *
@@ -40,22 +84,15 @@ class DittaDAO extends DAO {
      */
     protected function buildDomainObject(array $row) {
         $ditta = new Ditta();
-        $ditta->setId($row['id_ditta']);
+        $ditta->setIdDitta($row['id_ditta']);
         $ditta->setDenominazione($row['denominazione']);
         $ditta->setIndirizzo($row['indirizzo']);
         $ditta->setCap($row['cap']);
         $ditta->setCitta($row['citta']);
         $ditta->setCf($row['cf']);
         $ditta->setPiva($row['piva']);
-        $ditta->setDefaultEmissione($row['default_immissione']);
+        $ditta->setDefaultImmissione($row['default_immissione']);
         $ditta->setDittaTimeStamp($row['ditta_time_stamp']);
-
-        if (array_key_exists('id_ditta', $row)) {
-            // Find and set the associated fattura
-            $fatturaId = $row['fattura_id'];
-            $fattura = $this->fatturaDAO->find($fatturaId);
-            $ditta->setFattura($fattura);
-        }
 
         return $ditta;
     }

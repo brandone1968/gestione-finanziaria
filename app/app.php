@@ -15,6 +15,15 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
     'assets.version' => 'v1'
 ));
+// per gestire le sessioni
+$app->register(new Silex\Provider\SessionServiceProvider());
+
+// per gestire i form
+$app->register(new Silex\Provider\FormServiceProvider());
+$app->register(new Silex\Provider\LocaleServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider());
+// per gestire le validazioni dei form
+$app->register(new Silex\Provider\ValidatorServiceProvider());
 
 // Register services.
 $app['dao.fattura'] = function ($app) {
@@ -27,5 +36,8 @@ $app['dao.dettaglioFattura'] = function ($app) {
 };
 $app['dao.scadenza'] = function ($app) {
     return new gestionefinanziaria\DAO\ScadenzaDAO($app['db']);
+};
+$app['dao.ditta'] = function ($app) {
+    return new gestionefinanziaria\DAO\DittaDAO($app['db']);
 };
 

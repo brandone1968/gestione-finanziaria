@@ -155,7 +155,7 @@ class Fattura {
         $this->ditta1 = $ditta1;
     }
     
-        public function getDitta2() {
+    public function getDitta2() {
         return $this->ditta2;
     }
 

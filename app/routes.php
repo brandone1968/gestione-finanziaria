@@ -1,4 +1,8 @@
 <?php
+use Symfony\Component\HttpFoundation\Request;
+use gestionefinanziaria\Domain\Fattura;
+use gestionefinanziaria\Form\Type\FatturaType;
+use gestionefinanziaria\Domain\Ditta;
 
 // Home page - prossime scadenze
 $app->get('/', function () use ($app) {
@@ -40,6 +44,45 @@ $app->get('/fattura/{id}', function ($id) use ($app) {
     $dettagliFattura = $app['dao.dettaglioFattura']->findAllByFattura($id);
     return $app['twig']->render('fattura.html.twig', array('fattura' => $fattura, 'dettagliFattura' => $dettagliFattura, 'active_page' => "fatture"));
 })->bind('fattura');
+
+// Add a new fattura
+$app->match('/fattura/', function(Request $request) use ($app) {
+    $elencoDitte = $app['dao.ditta']->findAll();
+    $fattura = new Fattura();
+    //$elencoDitteSelect = array('Forse' => null, 'Si' => true, 'No' => false);
+    $elencoDitteSelect = $app['dao.ditta']->findAllElencoSelect();
+    
+    $options = array("Fattura"=>$fattura,"elencoDitteSelect"=>$elencoDitteSelect);
+    
+    $fatturaForm = $app['form.factory']->create(FatturaType::class, $options);
+    //$fatturaForm = $app['form.factory']->create(FatturaType::class, $fattura);
+    $fatturaForm->handleRequest($request);
+
+    if ($fatturaForm->isSubmitted() && $fatturaForm->isValid()) {
+        //$app['dao.fattura']->save($options['Fattura']);
+        $app['dao.fattura']->save($fattura);
+        $app['session']->getFlashBag()->add('success', 'The fattura was successfully created.');
+    }
+    return $app['twig']->render('fattura_form.html.twig', array(
+        'title' => 'New fattura',
+        'elencoDitte' => $elencoDitte,
+        'fatturaForm' => $fatturaForm->createView(), 
+        "active_page" => "fattura_add"));
+})->bind('fattura_add');
+
+// Edit an existing fattura
+$app->match('/fattura/{id}/edit', function($id, Request $request) use ($app) {
+    $fattura = $app['dao.fattura']->find($id);
+    $fatturaForm = $app['form.factory']->create(FatturaType::class, $fattura);
+    $fatturaForm->handleRequest($request);
+    if ($fatturaForm->isSubmitted() && $fatturaForm->isValid()) {
+        $app['dao.fattura']->save($fattura);
+        $app['session']->getFlashBag()->add('success', 'The fattura was successfully updated.');
+    }
+    return $app['twig']->render('fattura_form.html.twig', array(
+        'title' => 'Edit fattura',
+        'fatturaForm' => $fatturaForm->createView()));
+})->bind('fattura_edit');
 
 $app->get('/mbsoft/', function () use ($app) {
     $tipoPagamento = 0;
