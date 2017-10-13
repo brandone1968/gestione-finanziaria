@@ -96,6 +96,9 @@ class Fattura {
     }
 
     public function setDataFattura($dataFattura) {
+        // aggiungere conversione data nel
+        // formato yyyy-mm-gg
+        //$pippo = "12345";
         $this->dataFattura = $dataFattura;
     }
 

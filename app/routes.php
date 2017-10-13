@@ -47,15 +47,29 @@ $app->get('/fattura/{id}', function ($id) use ($app) {
 
 // Add a new fattura
 $app->match('/fattura/', function(Request $request) use ($app) {
-    $elencoDitte = $app['dao.ditta']->findAll();
+    $elencoDitteSelect = $app['dao.ditta']->findAll();
     $fattura = new Fattura();
-    //$elencoDitteSelect = array('Forse' => null, 'Si' => true, 'No' => false);
-    $elencoDitteSelect = $app['dao.ditta']->findAllElencoSelect();
     
-    $options = array("Fattura"=>$fattura,"elencoDitteSelect"=>$elencoDitteSelect);
+    // imposto come data di default la data del giorno
+    $oggi = new \DateTime();
+    $fattura->setDataFattura($oggi);
     
-    $fatturaForm = $app['form.factory']->create(FatturaType::class, $options);
-    //$fatturaForm = $app['form.factory']->create(FatturaType::class, $fattura);
+    // ricavo e imposto chi emette la fattura (ditta1)
+    $ditta1 = $app['dao.ditta']->findDefaultEmette();
+    $fattura->setDitta1($ditta1);
+
+    // ricavo e imposto il cliente (ditta2)
+    $ditta2 = $app['dao.ditta']->findDefaultCliente();
+    $fattura->setDitta2($ditta2);
+    
+
+    // ricavo e imposto il numero della prima fattura disponibile per l'anno in corso
+    // se non c'è ne sono viene impostato a 1 il numero della fattura.
+    $numFattura = $app['dao.fattura']->findPrimoNumeroLibero($oggi->format('Y'));
+    $fattura->setNumFattura($numFattura);
+    
+    $fatturaForm = $app['form.factory']->create(FatturaType::class, $fattura, array('elenco' => $elencoDitteSelect));
+
     $fatturaForm->handleRequest($request);
 
     if ($fatturaForm->isSubmitted() && $fatturaForm->isValid()) {
@@ -65,7 +79,6 @@ $app->match('/fattura/', function(Request $request) use ($app) {
     }
     return $app['twig']->render('fattura_form.html.twig', array(
         'title' => 'New fattura',
-        'elencoDitte' => $elencoDitte,
         'fatturaForm' => $fatturaForm->createView(), 
         "active_page" => "fattura_add"));
 })->bind('fattura_add');
@@ -89,12 +102,6 @@ $app->get('/mbsoft/', function () use ($app) {
     $anno = date("Y");
     return $app['twig']->render('mbsoft.html.twig', array('tipoPagamento' => $tipoPagamento, 'anno' => $anno, "active_page" => "mbsoft"));
 })->bind('mbsoft');
-
-//$app->get('imposte', function () use ($app) {
-//    $tipoPagamento = 0;
-//    $anno = date("Y");
-//    return $app['twig']->render('imposte.html.twig', array('tipoPagamento' => $tipoPagamento, 'anno' => $anno, "active_page" => "imposte"));
-//})->bind('imposte');
 
 $app->get('/imposte/', function () use ($app) {
     $tipoPagamento = 0;

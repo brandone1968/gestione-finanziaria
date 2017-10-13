@@ -90,7 +90,7 @@ class FatturaDAO extends DAO {
         return $anniSelezionabili;
     }
     
-        /**
+     /**
      * Ritorna elenco degli anni di incasso delle fatture.
      *
      * @return \gestionefinanziaria\Domain\Fattura|throws an exception if no matching fattura is found
@@ -112,14 +112,42 @@ class FatturaDAO extends DAO {
        
         return $anniSelezionabili;
     }
+    
+     /**
+     * Ritorna il primo numero disponibile dell'anno per una nuova fattura.
+     * Se non ci sono fatture per l'anno richiesto viene ritornato 1
+     *
+     * @param string $anno
+     *
+     * @return \gestionefinanziaria\Domain\Fattura|throws an exception if no matching fattura is found
+     */
+    public function findPrimoNumeroLibero($anno) {
+        $sql = "select 
+                max(fattura_num_fattura) as numFattura
+                from fattura
+                where YEAR(fattura_data_fattura) =?";
+ 
+        $row = $this->getDb()->fetchAssoc($sql, array($anno));
+        
+        if ($row)
+            $numFattura = $row['numFattura'] +1;
+        else
+            $numFattura = 1;
+
+        return $numFattura;
+    }
+    
 
     
         public function save(Fattura $fattura) {
+        // il campo data fattura deve essere trasformato da oggetto data a yyyy-mm-dd
+        // perchè possa essere salvato
         $fatturaData = array(
             'fattura_num_fattura' => $fattura->getNumFattura(),
             'descrizione' => $fattura->getDescrizione(),
-            'id_ditta1' => 1,
-            'id_ditta2' => 2
+            'id_ditta1' => $fattura->getDitta1()->getIdDitta(),
+            'id_ditta2' => $fattura->getDitta2()->getIdDitta(),
+            'fattura_data_fattura' => $fattura->getDataFattura()->format('Y-m-d')
             );
 
         if ($fattura->getId()) {

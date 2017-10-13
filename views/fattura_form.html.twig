@@ -12,40 +12,81 @@
         {% endfor %}
 
     <h2 class="text-center">{{ block('title') }}</h2>
+    {{ form_start(fatturaForm) }}
+    <table id="tableDettaglioFattura" class="table table-bordered table-hover">
+        <tr>
+            <td>    
+                {# form_row visualizza l'etichetta (label) #} 
+                {# form_widget visualizza il campo #} 
+                {{ form_row(fatturaForm.ditta1)}}     
+                {{ form_widget(fatturaForm.ditta1) }}
+            </td>
+            <td>
+                {{ form_row(fatturaForm.ditta2)}}  
+                {{ form_widget(fatturaForm.ditta2) }}
+            </td>
+        </tr>
+    <br>
+    <table id="tableFattura" class="table table-bordered table-hover">
+        <tr>
+            <td colspan="2" >
+                {{ form_row(fatturaForm.numFattura)}}                   
+                {{ form_widget(fatturaForm.numFattura)}}
+            </td>
+            <td colspan="2" >
+                {{ form_row(fatturaForm.dataFattura)}}                   
+                {{ form_widget(fatturaForm.dataFattura)}}
+           </td>
+        </tr>
+    </table>
+    
+           <br>
+    <table id="tableFattura" class="table table-bordered table-hover">
+        <tr>
+            <td colspan="4" >
+                {{ form_row(fatturaForm.descrizione)}} 
+                {{ form_widget(fatturaForm.descrizione)}}
+            </td>
+        </tr>
+    </table>
 
+    <table id="tableFattura" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">Descrizione dettaglio</th>
+                <th class="text-center">Quantità</th>
+                <th class="text-center">Importo</th>
+                <th class="text-center">Totale</th>
+             </tr>
+        </thead>
+ 
+        
+        <tr>
+            <td colspan="3" class="text-right">Imponibile</td><td></td>
+            </tr><tr>
+            <td colspan="3" class="text-right">IVA %</td><td></td>
+            </tr><tr>
+            <td colspan="3" class="text-right">Totale fattura</td><td></td>
+        </tr>
 
-    <div class="well">
-        {{ form_start(fatturaForm) }}
+    </table>
+        
+    <br>
+    <table id="tableNoteFattura" class="table table-bordered">
+        <tr>
+            <td colspan="2"><strong>Note: </strong></td>
+        </tr>
+    </table>
+</p>
 
-        {{ form_row(fatturaForm.numFattura)}}                   
-        {{ form_widget(fatturaForm.numFattura)}}
-
-        {{ form_row(fatturaForm.descrizione) }}
-        {{ form_widget(fatturaForm.descrizione) }}
-
-        {# definisco etichetta della select delle ditte che emettono la fattura#}
-        
-        {{ form_label(fatturaForm.ditta1, 'Emessa da ', {
-            'label_attr': {'class': 'CUSTOM_LABEL_CLASS'}
-        }) }}
-        
-        {# definisco etichetta della select delle ditte che ricevono la fattura#}
-        
-        {{ form_label(fatturaForm.ditta2, 'Verso ', {
-            'label_attr': {'class': 'CUSTOM_LABEL_CLASS'}
-        }) }}
-        
-        {{ form_widget(fatturaForm.ditta1) }}
-        
-        {{ form_widget(fatturaForm.ditta2) }}
-        
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-3">
-                <input type="submit" class="btn btn-primary" value="Save" />
+            <div class="col-sm-offset-5 col-sm-2">
+                <input type="submit" class="btn btn-primary btn-block" value="Save" />
             </div>
         </div>
         {{ form_end(fatturaForm) }}
 
-    </div>
+    
+    </table>
 
 {% endblock %}
